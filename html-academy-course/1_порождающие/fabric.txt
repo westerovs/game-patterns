@@ -1,0 +1,54 @@
+https://codesandbox.io/s/compassionate-mountain-gd9749?file=/src/index.js:0-963
+
+class StandartButton {
+  create() {
+    return `
+      <button class="double-btn">
+        Кнопка
+      </button>
+    `;
+  }
+}
+
+class AnimateButton {
+  get() {
+    return `
+      <button class="submit-btn">
+        Кнопка
+      </button>
+    `;
+  }
+}
+
+class ButtonBorder {
+  render() {
+    return `
+      <button class="action-btn">
+        Кнопка
+      </button>
+    `;
+  }
+}
+
+class Fabric {
+  create(type) {
+    switch (type) {
+      case "Двойная":
+        return new StandartButton().create();
+      case "C анимированной иконкой":
+        return new AnimateButton().get();
+      case "Кнопка-рамка":
+        return new ButtonBorder().render();
+      default:
+        return null;
+    }
+  }
+}
+
+const BUTTON_LIST = ["Двойная", "C анимированной иконкой", "Кнопка-рамка"];
+const ROOT = document.getElementById("app");
+
+BUTTON_LIST.forEach((buttonName) => {
+  const fabric = new Fabric();
+  ROOT.innerHTML += fabric.create(buttonName);
+});
