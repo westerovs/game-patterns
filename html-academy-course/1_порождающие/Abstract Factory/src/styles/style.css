@@ -1,0 +1,90 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+  min-height: 100%;
+}
+
+.page-body {
+  min-height: 100%;
+  font-size: 18px;
+  font-family: CurseCasual, Arial, Helvetica, sans-serif;
+  color: #ccc;
+  background: blue;
+}
+
+a {
+  text-decoration: none;
+}
+
+.link {
+  display: block;
+  padding: 5px;
+  color: red;
+  text-transform: uppercase;
+}
+
+li {
+  list-style-type: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*безопасное скрытие элемента*/
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+.wrapper {
+  min-width: 400px;
+  width: 600px;
+  min-height: 400px;
+  border: 3px solid black;
+}
+
+.list {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  border: 2px solid black;
+  margin-bottom: 5px;
+  padding: 15px 5px;
+  background-color: orange;
+  color: black;
+}
+
+.card p {
+  background-color: lavender;
+}
+
+.special {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: fit-content;
+  padding: 3px;
+  background-color: purple;
+  color: gold;
+  border: 2px solid black;
+}
