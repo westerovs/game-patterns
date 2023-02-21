@@ -1,4 +1,4 @@
-https://codesandbox.io/s/zadanie-vvedenie-shag-4-51i1v5?file=/src/index.js:0-1117
+// https://codesandbox.io/s/zadanie-vvedenie-shag-4-51i1v5?file=/src/index.js:0-1117
 
 import "./styles.css";
 
