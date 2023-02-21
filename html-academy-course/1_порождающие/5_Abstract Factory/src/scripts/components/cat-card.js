@@ -1,5 +1,4 @@
 export default class CatCard {
-  
   constructor(props) {
     this.name = props.name
     this.image = props.image
