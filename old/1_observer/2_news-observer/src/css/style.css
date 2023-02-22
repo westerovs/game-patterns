@@ -1,0 +1,58 @@
+/*
+картинки-заглушки
+https://via.placeholder.com/150x100
+*/
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.page {
+    min-height: 100%;
+}
+
+.page-body {
+    min-height: 100%;
+    font-size: 18px;
+    font-family: Geometria, Arial, Helvetica, sans-serif;
+    background-color: #2c7580;
+    color: #ccc;
+}
+
+.wrapper {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    margin: 50px auto;
+    padding: 5px;
+    width: 400px;
+    min-height: 400px;
+    background: gray;
+
+}
+
+p {
+    padding: 5px 10px;
+}
+
+.news {
+    min-height: 50px;
+    grid-column: 1 / -1;
+}
+
+.user {
+    padding: 5px;
+    background: #cccccc;
+    color: black;
+}
+
+.user-name {
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    color: tomato;
+}
