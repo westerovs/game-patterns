@@ -6,6 +6,9 @@ class Counter {
       return Counter.instance
     }
 
+    // this.game = game
+    // ...any code...
+
     Counter.instance = this
     return Counter.instance
   }

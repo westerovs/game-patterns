@@ -13,7 +13,7 @@ const TYPES = {
   default: 'default',
 }
 
-const renderCards = (text) => {
+const renderCards = (text = '') => {
   const abstractFactory = new AbstractFactory()
   
   wrapper.prepend(text)
@@ -54,9 +54,5 @@ Builder
 /*
 Например, если акция прошла, то можно просто её убрать и всё продолжит работать,
 а когда она снова понадобится - раскомментировать её.
-
-Builder
-  .setPromo('Акция! Подробности по телефону!')
-  .render(renderCards)
 */
 
