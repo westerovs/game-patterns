@@ -24,7 +24,6 @@ https://via.placeholder.com/150x100
   touch-action: none;
 }
 
-
 /*безопасное скрытие элемента*/
 .visually-hidden {
   position: absolute !important;
@@ -47,6 +46,7 @@ https://via.placeholder.com/150x100
 }
 
 canvas {
-  outline: 4px solid black;
+  outline: 4px solid blue;
   outline-offset: -4px;
+  background-color: #000;
 }
