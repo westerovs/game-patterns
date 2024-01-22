@@ -9,13 +9,16 @@ export default class Preload {
   #required = Object.keys(this.#sprites).length
 
   loadGraphics = (callback) => {
-    for (let key in this.#sprites) {
+    Object.keys(this.#sprites).forEach(key => {
       this.#sprites[key].src = `img/${key}.png`
+
       this.#sprites[key].onload = () => {
-        if (++this.#loaded >= this.#required) {
+        this.#loaded++
+
+        if (this.#loaded >= this.#required) {
           callback(this.#sprites)
         }
       }
-    }
+    })
   }
 }
