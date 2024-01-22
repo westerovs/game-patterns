@@ -63,17 +63,21 @@ const game = {
 
 function setEvents(platform, ball) {
   window.addEventListener('keydown', event => {
-    if (event.keyCode === KEYS.LEFT || event.keyCode === KEYS.RIGHT) {
-      platform.getComponent('MovementComponent').dx = (event.keyCode === KEYS.LEFT ? -1 : 1) * platform.getComponent('MovementComponent').velocity
+    if (event.key === KEYS.LEFT || event.key === KEYS.RIGHT) {
+      console.log('l r')
+      // platform.getComponent('MovementComponent').dx =
+      //   (event.key === KEYS.LEFT ? -1 : 1) * platform.getComponent('MovementComponent').velocity
     }
-    if (event.keyCode === KEYS.SPACE) {
-      ball.getComponent('MovementComponent').dy = -ball.getComponent('MovementComponent').velocity
-      platform.ball = null // "Отстреливаем" шарик от платформы
+    if (event.key === KEYS.SPACE || event.key === KEYS.ArrowUp) {
+      console.log('fire')
+      // ball.getComponent('MovementComponent').dy = -ball.getComponent('MovementComponent').velocity
+      // platform.ball = null // "Отстреливаем" шарик от платформы
     }
   })
   window.addEventListener('keyup', event => {
-    if (event.keyCode === KEYS.LEFT || event.keyCode === KEYS.RIGHT) {
-      platform.getComponent('MovementComponent').dx = 0
+    if (event.key === KEYS.LEFT || event.key === KEYS.RIGHT) {
+      console.log('up')
+      // platform.getComponent('MovementComponent').dx = 0
     }
   })
 }
