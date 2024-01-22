@@ -1,7 +1,7 @@
 import {KEYS} from './scripts/consts.js'
-import Preload from './scripts/states/Preload.js'
+import PreloadState from './scripts/states/PreloadState.js'
 import RenderSystem from './scripts/systems/RenderSystem.js'
-import Game from './scripts/states/Game.js'
+import GameState from './scripts/states/GameState.js'
 
 const setEvents = (platform, ball) => {
   window.addEventListener('keydown', event => {
@@ -25,10 +25,9 @@ const setEvents = (platform, ball) => {
 }
 // setEvents(platform, ball, KEYS) // И события
 
-
 window.createGame = () => {
-  const preload = new Preload()
-  const game = new Game()
+  const preload = new PreloadState()
+  const game = new GameState()
   window._game = game
 
   preload.loadGraphics((sprites) => {
@@ -36,8 +35,6 @@ window.createGame = () => {
     game.start()
   })
 }
-
-
 
 window.addEventListener('load', () => {
   if (window.createGame) {

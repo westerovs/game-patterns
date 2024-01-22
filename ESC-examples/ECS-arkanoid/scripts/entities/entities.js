@@ -1,4 +1,5 @@
 import Entity from './Entity.js'
+
 import PositionComponent from '../components/PositionComponent.js'
 import MovementComponent from '../components/MovementComponent.js'
 import RenderComponent from '../components/RenderComponent.js'
@@ -10,14 +11,6 @@ const createBall = () => {
   ball.addComponent(new RenderComponent('ball', 80, 20))
 
   return ball
-}
-const createPlatform = () => {
-  const platform = new Entity()
-  platform.addComponent(new PositionComponent(280, 300)) // Начальная позиция
-  platform.addComponent(new MovementComponent(0, 0, 6)) // Начальное движение
-  platform.addComponent(new RenderComponent('platform', 100, 14))
-
-  return platform
 }
 const createBlocks = () => {
   const blocks = []
@@ -34,9 +27,17 @@ const createBlocks = () => {
   console.log(blocks)
   return blocks
 }
+const createPlatform = () => {
+  const platform = new Entity()
+  platform.addComponent(new PositionComponent(280, 300)) // Начальная позиция
+  platform.addComponent(new MovementComponent(0, 0, 6)) // Начальное движение
+  platform.addComponent(new RenderComponent('platform', 100, 14))
+
+  return platform
+}
 
 export const Entities = [
   createBall(),
-  createPlatform(),
   ...createBlocks(),
+  createPlatform(),
 ]

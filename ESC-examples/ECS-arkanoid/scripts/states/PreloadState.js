@@ -1,4 +1,4 @@
-export default class Preload {
+export default class PreloadState {
   #sprites = {
     background: new Image(),
     ball: new Image(),

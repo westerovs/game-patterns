@@ -2,13 +2,12 @@ import {Entities} from '../entities/entities.js'
 import MovementSystem from '../systems/MovementSystem.js'
 import RenderSystem from '../systems/RenderSystem.js'
 
-
-export default class Game {
+export default class GameState {
   #ctx = document.getElementById('canvas').getContext('2d')
   #entities = [...Entities]
   #systems = {
-    movement: new MovementSystem(),
-    render: null, // Пока что здесь null, установим систему после загрузки спрайтов
+    // movement: new MovementSystem(),
+    // render: null, // Пока что здесь null, установим систему после загрузки спрайтов
   }
 
   get getSystems() {
