@@ -1,0 +1,75 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.page {
+  min-height: 100%;
+}
+
+.page-body {
+  min-height: 100%;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #004401;
+  color: #ccc;
+  touch-action: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*безопасное скрытие элемента*/
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+.wrapper {
+  position: relative;
+  margin: 50px auto;
+  min-width: 400px;
+  width: 400px;
+  min-height: 400px;
+  outline: 2px dashed gold;
+}
+
+canvas {
+  outline: 2px solid black;
+  outline-offset: -2px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#info {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  font-size: 30px;
+}
+
+.locustmorph {
+  display: none;
+}
