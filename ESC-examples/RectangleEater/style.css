@@ -60,12 +60,12 @@ canvas.goodHit {
   position: fixed;
   opacity: 1;
   text-align: center;
-  transition: all 0.3s;
   top: 0;
   right: 0;
   bottom: 80px;
   left: 0;
   visibility: visible;
+  transition: 2s;
 }
 
 #game-over.hidden {
@@ -89,7 +89,6 @@ canvas.goodHit {
 #game-over a {
   border-bottom: 1px solid #22ff22;
   color: #22ff22;
-  text-shadow: 1px 1px 0 #000000, 2px 2px 0 #000000, 3px 3px 0 #000000;
   text-decoration: none;
 }
 
