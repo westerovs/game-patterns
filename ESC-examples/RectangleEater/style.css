@@ -1,0 +1,98 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body, html {
+  background-color: #2c7580;
+  bottom: 0;
+  font-family: 'VT323', monospace;
+}
+
+h1 {
+  font-size: 7em;
+}
+
+h2 {
+  font-size: 5em;
+}
+
+h3 {
+  font-size: 3em;
+}
+
+a {
+  color: #336699;
+}
+
+canvas {
+  background: gray;
+  border: 5px solid #343434;
+  border-radius: 3px;
+  cursor: none;
+  display: table;
+  margin: 0 auto;
+  position: relative;
+  transition: 2s;
+}
+
+canvas.game-over {
+  background: #181818;
+}
+
+canvas.badHit {
+  background: rgba(255, 0, 0, 0.4);
+}
+
+canvas.goodHit {
+  background: rgba(0, 255, 0, 0.4);
+}
+
+#score {
+  font-size: 6em;
+}
+
+#game-over {
+  color: #ffffff;
+  position: fixed;
+  opacity: 1;
+  text-align: center;
+  transition: all 0.3s;
+  top: 0;
+  right: 0;
+  bottom: 80px;
+  left: 0;
+  visibility: visible;
+}
+
+#game-over.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+#game-over h1 {
+  margin-top: 1.2em;
+}
+
+#game-over h2 {
+  margin-bottom: 0.1em;
+}
+
+#game-over h3 {
+  margin: 0;
+  padding: 0;
+}
+
+#game-over a {
+  border-bottom: 1px solid #22ff22;
+  color: #22ff22;
+  text-shadow: 1px 1px 0 #000000, 2px 2px 0 #000000, 3px 3px 0 #000000;
+  text-decoration: none;
+}
+
+.center {
+  text-align: center;
+}

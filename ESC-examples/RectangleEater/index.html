@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>ECS</title>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id='score' class='center'>0</div>
+<canvas id='game-canvas' width="400" height="400"></canvas>
+
+<section id='game-over' class='hidden'>
+  <h1> Game Over </h1>
+  <h2> Final Score: <span id='final-score'>0</span></h2>
+
+  <h3>
+    <a href='javascript:window.location=window.location;'>Retry</a>
+  </h3>
+</section>
+
+<script>
+  // В учебных целях мы создадим глобальный объект, содержащий ссылки на все объекты.
+  window.ECS = {
+    Components: {},
+    systems: {},
+    entities: [],
+    game: {},
+    score: 0
+  }
+
+  // Функциональность Canvas (НЕ специфичная для ECS)
+  // --------------------------------------
+  // Для демонстрации просто возьмите ссылку на холст
+  // Некоторым системам (например, рендерингу) необходимо знать о холсте.
+  // Мы могли бы передать ссылку на него или сохранить его состояние глобально, так
+  ECS.$score = document.getElementById('score')
+  ECS.$canvas = document.getElementById('game-canvas')
+  ECS.context = ECS.$canvas.getContext('2d')
+</script>
+
+<script src='scripts/lib/hammer.js'></script>
+<script src='scripts/Entity.js'></script>
+<script src='scripts/Components.js'></script>
+<script src='scripts/Assemblages.js'></script>
+<script src='scripts/systems/decay.js'></script>
+<script src='scripts/systems/userInput.js'></script>
+<script src='scripts/systems/collision.js'></script>
+<script src='scripts/systems/render.js'></script>
+<script src='scripts/game.js'></script>
+
+</body>
+</html>
