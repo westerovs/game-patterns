@@ -1,3 +1,24 @@
+import Assemblages from './Assemblages.js'
+import {COMPONENTS} from './Components.js'
+
+// systems
+import UserInputSystem from './systems/UserInput.js'
+import DecaySystem from './systems/Decay.js'
+import RenderSystem from './systems/Render.js'
+import CollisionSystem from './systems/Сollision.js'
+import Entity from './Entity.js'
+
+// Добавляем сущность в глобальный объект ECS
+ECS.Entity = Entity;
+
+ECS.Assemblages = Assemblages
+ECS.Components = COMPONENTS
+
+ECS.systems.decay = new DecaySystem()
+ECS.systems.userInput = new UserInputSystem()
+ECS.systems.collision = new CollisionSystem()
+ECS.systems.render = new RenderSystem()
+
 class Game {
   #running = true
   #entities = {}
@@ -44,7 +65,6 @@ class Game {
 
   #setupSystems() {
     // Порядок систем, имеет решающее значение,
-    // поэтому убедитесь, что системы повторяются в правильном порядке
     this.#systems = [
       ECS.systems.userInput,
       ECS.systems.collision,
@@ -57,7 +77,10 @@ class Game {
   // которые имеют соответствующие компоненты для системы, вместо
   // того, чтобы заставлять систему выполнять итерацию по всем объектам
   gameLoop = () => {
-    this.#systems.forEach(system => system(ECS.entities))
+    // this.#systems.forEach(system => system(ECS.entities))
+    this.#systems.forEach(system => {
+      if (system.tick) system.tick(ECS.entities)
+    })
 
     if (this.#running) {
       requestAnimationFrame(this.gameLoop)

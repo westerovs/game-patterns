@@ -1,49 +1,47 @@
 /* =========================================================================
  *
  * Entity.js
- *  Definition of our "Entity". Abstractly, an entity is basically an ID. 
+ *  Definition of our "Entity". Abstractly, an entity is basically an ID.
  *  Here we implement an entity as a container of data (container of components)
  *
  * ========================================================================= */
-ECS.Entity = function Entity(){
-    // Generate a pseudo random ID
-    this.id = (+new Date()).toString(16) + 
-        (Math.random() * 100000000 | 0).toString(16) +
-        ECS.Entity.prototype._count;
 
-    // increment counter
-    ECS.Entity.prototype._count++;
+export default class Entity {
+  static _count = 0;
 
-    // The component data will live in this object
+  constructor() {
+    // Генерация псевдослучайного ID
+    this.id = (+new Date()).toString(16) +
+      (Math.random() * 100000000 | 0).toString(16) +
+      Entity._count;
+
+    // Увеличение счётчика
+    Entity._count++;
+
+    // Данные компонентов будут храниться в этом объекте
     this.components = {};
+  }
 
-    return this;
-};
-// keep track of entities created
-ECS.Entity.prototype._count = 0;
-
-ECS.Entity.prototype.addComponent = function addComponent ( component ){
-    // Add component data to the entity
+  addComponent(component) {
+    // Добавление данных компонента к сущности
     this.components[component.name] = component;
     return this;
-};
-ECS.Entity.prototype.removeComponent = function removeComponent ( componentName ){
-    // Remove component data by removing the reference to it.
-    // Allows either a component function or a string of a component name to be
-    // passed in
-    var name = componentName; // assume a string was passed in
+  }
 
-    if(typeof componentName === 'function'){ 
-        // get the name from the prototype of the passed component function
-        name = componentName.prototype.name;
-    }
+  removeComponent(componentName) {
+    // Удаление данных компонента путём удаления ссылки на него.
+    // Позволяет передать как функцию компонента, так и строку с именем компонента
+    const name = typeof componentName === 'function' ? componentName.prototype.name : componentName;
 
     delete this.components[name];
     return this;
-};
+  }
 
-ECS.Entity.prototype.print = function print () {
-    // Function to print / log information about the entity
+  print() {
+    // Функция для печати/логирования информации о сущности
     console.log(JSON.stringify(this, null, 4));
     return this;
-};
+  }
+}
+
+
