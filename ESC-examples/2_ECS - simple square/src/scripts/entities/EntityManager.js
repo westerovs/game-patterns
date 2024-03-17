@@ -1,13 +1,13 @@
 export default class EntityManager {
   constructor() {
-    this.entities = {};
+    this.entities = {}
   }
 
   addEntity(entity) {
-    this.entities[entity.id] = entity;
+    this.entities[entity.id] = entity
   }
 
   getEntity(id) {
-    return this.entities[id];
+    return this.entities[id]
   }
 }
