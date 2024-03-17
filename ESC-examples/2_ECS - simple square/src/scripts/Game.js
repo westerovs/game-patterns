@@ -31,7 +31,6 @@ export default class Game {
     const square = new Entity()
     square.addComponent(new PositionComponent(x, y))
     square.addComponent(new RenderableComponent(color, size))
-    // square.addComponent(new InputComponent())
     square.addComponent(new CollidableComponent(size, size))
 
     this.entityManager.addEntity(square)
@@ -53,6 +52,7 @@ export default class Game {
     this.inputSystem.update(this.entityManager.entities)
     this.collisionSystem.update(this.entityManager.entities)
     this.renderSystem.update(this.entityManager.entities)
-    requestAnimationFrame(this.gameLoop.bind(this))
+
+    requestAnimationFrame(this.gameLoop)
   }
 }
