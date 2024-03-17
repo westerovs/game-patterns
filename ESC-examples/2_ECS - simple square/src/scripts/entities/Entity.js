@@ -1,6 +1,8 @@
+let entityIdCounter = 0
+
 export default class Entity {
   constructor() {
-    this.id = (+new Date()).toString(16)
+    this.id = entityIdCounter++
     this.components = {}
   }
 

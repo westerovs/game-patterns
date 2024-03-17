@@ -1,6 +1,6 @@
 // entities
-import EntityManager from './entities/EntityManager.js'
 import Entity from './entities/Entity.js'
+import EntityManager from './entities/EntityManager.js'
 // systems
 import InputSystem from './systems/InputSystem.js'
 import RenderSystem from './systems/RenderSystem.js'
@@ -17,27 +17,35 @@ export default class Game {
     this.entityManager = new EntityManager()
     this.renderSystem = new RenderSystem()
     this.inputSystem = new InputSystem()
-    // Game.js
     this.collisionSystem = new CollisionSystem({
       minX: 0,
       minY: 0,
       maxX: config.canvasWidth,
       maxY: config.canvasHeight
     })
+
+    this.entities = {}
   }
 
-  createSquare() {
+  createSquare(x, y, size, color) {
     const square = new Entity()
-    square.addComponent(new PositionComponent(100, 100))
-    square.addComponent(new RenderableComponent('red', 50))
-    square.addComponent(new CollidableComponent(50, 50))
-    square.addComponent(new InputComponent())
+    square.addComponent(new PositionComponent(x, y))
+    square.addComponent(new RenderableComponent(color, size))
+    // square.addComponent(new InputComponent())
+    square.addComponent(new CollidableComponent(size, size))
 
     this.entityManager.addEntity(square)
+    return square
   }
 
   start() {
-    this.createSquare()
+    const redSquare = this.createSquare(100, 100, 50, 'red')
+    redSquare.addComponent(new InputComponent())
+    this.entities.redSquare = redSquare
+
+    const blueSquare = this.createSquare(200, 200, 100, 'blue')
+    this.entities.blueSquare = blueSquare
+
     this.gameLoop()
   }
 
@@ -45,6 +53,6 @@ export default class Game {
     this.inputSystem.update(this.entityManager.entities)
     this.collisionSystem.update(this.entityManager.entities)
     this.renderSystem.update(this.entityManager.entities)
-    requestAnimationFrame(this.gameLoop)
+    requestAnimationFrame(this.gameLoop.bind(this))
   }
 }
