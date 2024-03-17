@@ -1,4 +1,4 @@
-export default class Input {
+export default class InputComponent {
   constructor() {
     this.keys = {}
     window.addEventListener('keydown', (e) => this.keys[e.key] = true)

@@ -10,9 +10,9 @@ export default class RenderSystem {
   update(entities) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     Object.values(entities).forEach(entity => {
-      if (entity.components.Position && entity.components.Renderable) {
-        const {x, y} = entity.components.Position
-        const {color, size} = entity.components.Renderable
+      if (entity.components.PositionComponent && entity.components.RenderableComponent) {
+        const {x, y} = entity.components.PositionComponent
+        const {color, size} = entity.components.RenderableComponent
         this.context.fillStyle = color
         this.context.fillRect(x, y, size, size)
       }
