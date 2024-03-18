@@ -27,6 +27,17 @@ export default class Game {
     this.entities = {}
   }
 
+  start() {
+    const redSquare = this.createSquare(100, 100, 50, 'red')
+    redSquare.addComponent(new InputComponent())
+    this.entities.redSquare = redSquare
+
+    const blueSquare = this.createSquare(200, 200, 100, 'blue')
+    this.entities.blueSquare = blueSquare
+
+    this.update()
+  }
+
   createSquare(x, y, size, color) {
     const square = new Entity()
     square.addComponent(new PositionComponent(x, y))
@@ -37,22 +48,11 @@ export default class Game {
     return square
   }
 
-  start() {
-    const redSquare = this.createSquare(100, 100, 50, 'red')
-    redSquare.addComponent(new InputComponent())
-    this.entities.redSquare = redSquare
-
-    const blueSquare = this.createSquare(200, 200, 100, 'blue')
-    this.entities.blueSquare = blueSquare
-
-    this.gameLoop()
-  }
-
-  gameLoop = () => {
+  update = () => {
     this.inputSystem.update(this.entityManager.entities)
     this.collisionSystem.update(this.entityManager.entities)
     this.renderSystem.update(this.entityManager.entities)
 
-    requestAnimationFrame(this.gameLoop)
+    requestAnimationFrame(this.update)
   }
 }
