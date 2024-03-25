@@ -5,20 +5,20 @@ export default class PreloadState {
     platform: new Image(),
     block: new Image(),
   }
-  #loaded = 0
   #required = Object.keys(this.#sprites).length
 
-  loadGraphics = (callback) => {
-    Object.keys(this.#sprites).forEach(key => {
-      this.#sprites[key].src = `img/${key}.png`
+  loadGraphics = () => {
+    return new Promise(resolve => {
+      let loaded = 0
 
-      this.#sprites[key].onload = () => {
-        this.#loaded++
-
-        if (this.#loaded >= this.#required) {
-          callback(this.#sprites)
+      Object.keys(this.#sprites).forEach((key) => {
+        this.#sprites[key].src = `./img/${key}.png`
+        this.#sprites[key].onload = () => {
+          loaded++
+          if (loaded >= this.#required) resolve(this.#sprites)
         }
-      }
+      })
     })
+
   }
 }

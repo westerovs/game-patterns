@@ -12,6 +12,7 @@ const createBall = () => {
 
   return ball
 }
+
 const createBlocks = () => {
   const blocks = []
 
@@ -24,9 +25,9 @@ const createBlocks = () => {
     }
   }
 
-  console.log(blocks)
   return blocks
 }
+
 const createPlatform = () => {
   const platform = new Entity()
   platform.addComponent(new PositionComponent(280, 300)) // Начальная позиция
