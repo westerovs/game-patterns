@@ -1,8 +1,6 @@
-export default class Alien {
+export default class State {
   constructor(game) {
     this.game = game
-    this.spriteWidth = 360
-    this.spriteHeight = 360
 
     this.color = 'black'
   }
@@ -11,5 +9,4 @@ export default class Alien {
     context.fillStyle = this.color
     context.fillRect(0, 0, this.game.width, this.game.height)
   }
-
 }

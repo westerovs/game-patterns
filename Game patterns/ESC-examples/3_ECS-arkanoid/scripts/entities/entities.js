@@ -15,12 +15,15 @@ const createBall = () => {
 
 const createBlocks = () => {
   const blocks = []
+  const width = 60
+  const height = 20
+  const offsetBetween = 4
 
   for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 6; col++) {
       const block = new Entity()
-      block.addComponent(new PositionComponent(64 * col + 65, 24 * row + 35))
-      block.addComponent(new RenderComponent('block', 60, 20))
+      block.addComponent(new PositionComponent((col * width), 0))
+      block.addComponent(new RenderComponent('block', width, height))
       blocks.push(block)
     }
   }

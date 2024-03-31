@@ -1,15 +1,14 @@
-import Alien from '../Alien.js'
+import State from './State.js'
 
-export default class Charge extends Alien {
+export default class Charge extends State {
   start() {
     this.color = 'red'
-    this.frameY = 0
   }
 
   update() {
     if (this.game.keys.has('3')) {
       console.log('i has')
-      this.game.setAlienState(2)
+      this.game.setState(2)
     }
   }
 

@@ -3,11 +3,15 @@ import MovementSystem from '../systems/MovementSystem.js'
 import RenderSystem from '../systems/RenderSystem.js'
 
 export default class GameState {
-  #ctx = document.getElementById('canvas').getContext('2d')
+  #ctx = null
   #entities = [...Entities]
   #systems = {
     // movement: new MovementSystem(),
     // render: null, // Пока что здесь null, установим систему после загрузки спрайтов
+  }
+
+  constructor(ctx) {
+    this.#ctx = ctx
   }
 
   get getSystems() {
@@ -15,22 +19,22 @@ export default class GameState {
   }
 
   update = () => {
-    Object.values(this.#systems).forEach(system => {
-      if (system) { // Проверяем, что система инициализирована
-        this.#entities.forEach(entity => system.run(entity, this.#ctx))
-      }
-    })
+    // Object.values(this.#systems).forEach(system => {
+    //   if (system) { // Проверяем, что система инициализирована
+    //     this.#entities.forEach(entity => system.run(entity, this.#ctx))
+    //   }
+    // })
   }
 
   run = () => {
-    window.requestAnimationFrame(() => {
-      this.update()
-      this.run()
-    })
+    // window.requestAnimationFrame(() => {
+    //   this.update()
+    //   this.run()
+    // })
   }
 
   start = () => {
-    this.run()
+    // this.run()
   }
 }
 

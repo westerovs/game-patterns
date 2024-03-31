@@ -3,26 +3,34 @@ import PreloadState from './states/PreloadState.js'
 import GameState from './states/GameState.js'
 import RenderSystem from './systems/RenderSystem.js'
 
-console.log(Entities)
-
 export default class Game {
-  constructor() {
+  #sprites = []
+  #ctx = null
+  #renderSystem = null
 
+  constructor() {
+    // this.ctx = this.#renderSystem.ctx
   }
 
   start = () => {
     const preload = new PreloadState()
-    const gameState = new GameState()
 
     preload.loadGraphics()
       .then((sprites) => {
-        gameState.getSystems.render = new RenderSystem(sprites)
-        gameState.start()
+        this.#sprites = sprites
+        this.#renderSystem = new RenderSystem(sprites)
+        this.update()
+
+        // gameState.getSystems.render = new RenderSystem(sprites)
+
       })
+
   }
 
   update = () => {
+    this.#renderSystem.update(Entities)
 
+    requestAnimationFrame(this.update)
   }
 }
 

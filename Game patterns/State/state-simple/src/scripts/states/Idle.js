@@ -1,6 +1,6 @@
-import Alien from '../Alien.js'
+import State from './State.js'
 
-export default class Idle extends Alien {
+export default class Idle extends State {
   start() {
     this.color = 'green'
   }
@@ -9,10 +9,10 @@ export default class Idle extends Alien {
   update() {
     if (this.game.keys.has('2')) {
       console.log('i has')
-      this.game.setAlienState(1)
+      this.game.setState(1)
     }
     if (this.game.keys.has('3')) {
-      this.game.setAlienState(2)
+      this.game.setState(2)
     }
   }
 }

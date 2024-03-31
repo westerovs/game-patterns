@@ -8,9 +8,13 @@ export default class Game {
     this.width = this.canvas.width
     this.height = this.canvas.height
 
-    this.alien = null
-    this.states = [new Idle(this), new Charge(this), new Swarm(this)]
-    this.setAlienState(0)
+    this.state = null
+    this.states = [
+      new Idle(this),
+      new Charge(this),
+      new Swarm(this),
+    ]
+    this.setState(0)
 
     this.keys = new Set()
     document.addEventListener('keydown', (e) => {
@@ -21,15 +25,14 @@ export default class Game {
     })
   }
 
-  setAlienState(state) {
-    this.alien = this.states[state]
-    this.alien.start()
-    console.log(this.alien)
+  setState(state) {
+    this.state = this.states[state]
+    this.state.start()
+    console.log(this.state)
   }
 
   render(context) {
-    this.alien.draw(context)
-    this.alien.update()
+    this.state.draw(context)
+    this.state.update()
   }
-
 }
