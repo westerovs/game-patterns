@@ -1,53 +1,105 @@
 import {Texture, Text} from '../assets/lib/pixi.mjs'
-import {assetsMap} from './assetsMap.js'
-// E
+import {LEVELS} from './CONFIG.js'
+
+// Entity
 import Entity from './ecs/entities/Entity.js'
-// C
+// Components
 import SpriteComponent from './ecs/components/SpriteComponent.js'
-import InteractiveComponent from './ecs/components/InteractiveComponent.js'
+import InteractiveComponent from './ecs/components/InteractionComponent.js'
 import PositionComponent from './ecs/components/PositionComponent.js'
-// S
+import BackgroundComponent from './ecs/components/BackgroundComponent.js'
+import InteractionComponent from './ecs/components/InteractionComponent.js'
+// Systems
 import RenderSystem from './ecs/systems/RenderSystem.js'
+import BackgroundRenderSystem from './ecs/systems/BackgroundRenderSystem.js'
 
 export default class StateGame {
   #app = null
   #entities = []
   #systems = []
-  #itemsLeft = 3
+  #itemsLeft = null
   #textFound = null
+  #level = null
+  #lvCounter = 1
+  #maxLevelsValue = Object.keys(LEVELS).length
 
-  constructor(app) {
+  constructor(app, level = 1) {
     this.#app = app
+    this.#level = level
   }
 
   enter = () => {
-    this.createEntities()
-    this.initSystems()
-    this.updateText()
+    this.#createEntities()
+    this.#initSystems()
+    this.#updateText()
 
-    this.#app.ticker.add(() => {
-      this.#systems.forEach(system => system.update())
-    })
+    this.#systems.forEach(system => system.update())
   }
 
-  createEntities = () => {
-    assetsMap.sprites.forEach(({name}, i) => {
+  switchLevel = (newLevel) => {
+    this.#level = newLevel
+    this.#itemsLeft = newLevel.items
+
+    // Удаляем все текущие спрайты со сцены
+    this.#entities.forEach(entity => {
+      const spriteComponent = entity.getComponent(SpriteComponent) || entity.getComponent(BackgroundComponent)
+
+      if (spriteComponent) {
+        this.#app.stage.removeChild(spriteComponent.sprite)
+      }
+    })
+
+    // Очищаем текущие сущности и системы
+    this.#entities = []
+    this.#systems = []
+
+    // Перезагружаем уровень
+    this.enter()
+  }
+
+  #createEntities = () => {
+    const levelConfig = LEVELS[this.#level]
+    this.#itemsLeft = levelConfig.items
+
+    this.#createBackground(levelConfig)
+    this.#createHogItems(levelConfig)
+  }
+
+  #createBackground = (levelConfig) => {
+    const backgroundEntity = new Entity('background')
+    const backgroundTexture = Texture.from(levelConfig.background)
+    const backgroundComponent = new BackgroundComponent(backgroundEntity, backgroundTexture)
+
+    backgroundEntity.addComponent(backgroundComponent)
+    this.#entities.push(backgroundEntity)
+  }
+
+  #createHogItems = (levelConfig) => {
+    levelConfig.items.forEach(({ name, x, y }, i) => {
       const entity = new Entity(i)
       const spriteComponent = new SpriteComponent(Texture.from(name))
       spriteComponent.sprite.once('pointerdown', () => this.onItemClicked(entity))
 
-      entity.addComponent(new PositionComponent(i * 250, 250))
+      entity.addComponent(new PositionComponent(x, y))
       entity.addComponent(spriteComponent)
-      entity.addComponent(new InteractiveComponent())
+      entity.addComponent(new InteractionComponent())
 
       this.#entities.push(entity)
     })
+
+    this.#itemsLeft = levelConfig.items.length
   }
 
-  initSystems = () => {
+  #initSystems = () => {
+    const backgroundRenderSystem = new BackgroundRenderSystem(this.#app)
     const renderSystem = new RenderSystem(this.#app)
-    this.#entities.forEach(entity => renderSystem.addEntity(entity))
-    this.#systems.push(renderSystem)
+
+    this.#entities.forEach(entity => {
+      backgroundRenderSystem.addEntity(entity)
+      renderSystem.addEntity(entity)
+    })
+
+    this.#systems.push(backgroundRenderSystem, renderSystem)
   }
 
   onItemClicked = (entity) => {
@@ -61,18 +113,25 @@ export default class StateGame {
         .eventCallback('onComplete', () => {
           this.#app.stage.removeChild(sprite)
           this.#itemsLeft -= 1
-          this.updateText()
+          this.#updateText()
 
-          if (this.#itemsLeft === 0) this.winAction()
+          if (this.#itemsLeft === 0) this.#levelEndAction()
         })
     }
   }
 
-  winAction = () => {
-    this.showCompletionMessage()
+  #levelEndAction = () => {
+    this.#lvCounter++
+
+    if (this.#lvCounter > this.#maxLevelsValue) {
+      this.#showCompletionMessage()
+      return
+    }
+
+    this.switchLevel(this.#lvCounter)
   }
 
-  updateText = () => {
+  #updateText = () => {
     if (!this.#textFound) {
       this.#textFound = new Text(`Осталось предметов: ${this.#itemsLeft}`, {fill: 'white'})
       this.#textFound.position.set(20, 20)
@@ -82,7 +141,7 @@ export default class StateGame {
     }
   }
 
-  showCompletionMessage = () => {
+  #showCompletionMessage = () => {
     const winMessage = new Text('Все предметы найдены!', {fill: 'white'})
     winMessage.position.set(this.#app.view.width / 2, this.#app.view.height / 2)
     winMessage.anchor.set(0.5)

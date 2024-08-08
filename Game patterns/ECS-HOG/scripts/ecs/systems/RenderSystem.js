@@ -1,7 +1,7 @@
 import System from './System.js'
 import PositionComponent from '../components/PositionComponent.js'
 import SpriteComponent from '../components/SpriteComponent.js'
-import InteractiveComponent from '../components/InteractiveComponent.js'
+import InteractiveComponent from '../components/InteractionComponent.js'
 
 export default class RenderSystem extends System {
   constructor(app) {

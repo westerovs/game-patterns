@@ -1,9 +1,9 @@
 import {Application} from '../assets/lib/pixi.mjs'
 import {assetsMap} from './assetsMap.js'
-import {config} from './config.js'
+import {CONFIG} from './CONFIG.js'
 import StateGame from './StateGame.js'
 
-const App = new Application(config)
+const App = new Application(CONFIG)
 document.body.appendChild(App.view)
 
 class Game {
@@ -23,7 +23,6 @@ class Game {
   }
 
   startGame() {
-    console.log(this.stateGame)
     this.stateGame.enter()
   }
 }
