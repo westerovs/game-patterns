@@ -9,7 +9,7 @@ document.body.appendChild(App.view)
 class Game {
   constructor() {
     this.app = App
-    this.stateGame = new StateGame(this.app)
+    this.stateGame = new StateGame(this.app, 1)
   }
 
   preload() {

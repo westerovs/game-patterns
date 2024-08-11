@@ -1,6 +1,6 @@
 import System from './System.js'
 import PositionComponent from '../components/PositionComponent.js'
-import SpriteComponent from '../components/SpriteComponent.js'
+import ContainerComponent from '../components/ContainerComponent.js'
 import InteractiveComponent from '../components/InteractionComponent.js'
 
 export default class RenderSystem extends System {
@@ -12,16 +12,20 @@ export default class RenderSystem extends System {
   update() {
     this.entities.forEach(entity => {
       const position = entity.getComponent(PositionComponent)
-      const spriteComponent = entity.getComponent(SpriteComponent)
+      const containerComponent  = entity.getComponent(ContainerComponent)
 
-      if (position && spriteComponent) {
-        const sprite = spriteComponent.sprite
-        sprite.position.set(position.x, position.y)
-        sprite.anchor.set(0.5)
-        sprite.interactive = entity.hasComponent(InteractiveComponent)
+      if (position && containerComponent) {
+        const container = containerComponent.view
 
-        if (!this.app.stage.children.includes(sprite)) {
-          this.app.stage.addChild(sprite)
+        container.position.set(position.x, position.y)
+        container.pivot.set(container.width / 2, container.height / 2)
+
+        // gsap.to(container, {angle: 360, duration: 2, repeat: -1})
+
+        container.interactive = entity.hasComponent(InteractiveComponent)
+
+        if (!this.app.stage.children.includes(container)) {
+          this.app.stage.addChild(container)
         }
       }
     })

@@ -4,7 +4,7 @@ import {LEVELS} from './CONFIG.js'
 // Entity
 import Entity from './ecs/entities/Entity.js'
 // Components
-import SpriteComponent from './ecs/components/SpriteComponent.js'
+import ContainerComponent from './ecs/components/ContainerComponent.js'
 import InteractiveComponent from './ecs/components/InteractionComponent.js'
 import PositionComponent from './ecs/components/PositionComponent.js'
 import BackgroundComponent from './ecs/components/BackgroundComponent.js'
@@ -17,6 +17,7 @@ export default class StateGame {
   #app = null
   #entities = []
   #systems = []
+
   #itemsLeft = null
   #textFound = null
   #level = null
@@ -42,10 +43,10 @@ export default class StateGame {
 
     // Удаляем все текущие спрайты со сцены
     this.#entities.forEach(entity => {
-      const spriteComponent = entity.getComponent(SpriteComponent) || entity.getComponent(BackgroundComponent)
+      const containerComponent = entity.getComponent(ContainerComponent) || entity.getComponent(BackgroundComponent)
 
-      if (spriteComponent) {
-        this.#app.stage.removeChild(spriteComponent.sprite)
+      if (containerComponent) {
+        this.#app.stage.removeChild(containerComponent.sprite)
       }
     })
 
@@ -61,10 +62,11 @@ export default class StateGame {
     const levelConfig = LEVELS[this.#level]
     this.#itemsLeft = levelConfig.items
 
-    this.#createBackground(levelConfig)
+    // this.#createBackground(levelConfig)
     this.#createHogItems(levelConfig)
   }
 
+  // todo id
   #createBackground = (levelConfig) => {
     const backgroundEntity = new Entity('background')
     const backgroundTexture = Texture.from(levelConfig.background)
@@ -76,15 +78,15 @@ export default class StateGame {
 
   #createHogItems = (levelConfig) => {
     levelConfig.items.forEach(({ name, x, y }, i) => {
-      const entity = new Entity(i)
-      const spriteComponent = new SpriteComponent(Texture.from(name))
-      spriteComponent.sprite.once('pointerdown', () => this.onItemClicked(entity))
+      const hogItemEntity = new Entity(i)
+      const containerComponent = new ContainerComponent(Texture.from(name))
+      containerComponent.view.once('pointerdown', () => this.#onItemClicked(hogItemEntity))
 
-      entity.addComponent(new PositionComponent(x, y))
-      entity.addComponent(spriteComponent)
-      entity.addComponent(new InteractionComponent())
+      hogItemEntity.addComponent(new PositionComponent(x, y))
+      hogItemEntity.addComponent(containerComponent)
+      hogItemEntity.addComponent(new InteractionComponent())
 
-      this.#entities.push(entity)
+      this.#entities.push(hogItemEntity)
     })
 
     this.#itemsLeft = levelConfig.items.length
@@ -102,16 +104,16 @@ export default class StateGame {
     this.#systems.push(backgroundRenderSystem, renderSystem)
   }
 
-  onItemClicked = (entity) => {
-    const spriteComponent = entity.getComponent(SpriteComponent)
-    if (spriteComponent) {
-      const sprite = spriteComponent.sprite
+  #onItemClicked = (entity) => {
+    const containerComponent = entity.getComponent(ContainerComponent)
+    if (containerComponent) {
+      const view = containerComponent.view
 
       gsap.timeline()
-        .to(sprite.scale, {x: 1.5, y: 1.5, duration: 0.5})
-        .to(sprite, {alpha: 0, duration: 0.5}, '<')
+        .to(view.scale, {x: 1.5, y: 1.5, duration: 0.5})
+        .to(view, {alpha: 0, duration: 0.5}, '<')
         .eventCallback('onComplete', () => {
-          this.#app.stage.removeChild(sprite)
+          this.#app.stage.removeChild(view)
           this.#itemsLeft -= 1
           this.#updateText()
 
