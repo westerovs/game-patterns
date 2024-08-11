@@ -20,8 +20,6 @@ export default class RenderSystem extends System {
         container.position.set(position.x, position.y)
         container.pivot.set(container.width / 2, container.height / 2)
 
-        // gsap.to(container, {angle: 360, duration: 2, repeat: -1})
-
         container.interactive = entity.hasComponent(InteractiveComponent)
 
         if (!this.app.stage.children.includes(container)) {

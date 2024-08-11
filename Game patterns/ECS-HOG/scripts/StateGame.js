@@ -5,18 +5,18 @@ import {LEVELS} from './CONFIG.js'
 import Entity from './ecs/entities/Entity.js'
 // Components
 import ContainerComponent from './ecs/components/ContainerComponent.js'
-import InteractiveComponent from './ecs/components/InteractionComponent.js'
 import PositionComponent from './ecs/components/PositionComponent.js'
 import BackgroundComponent from './ecs/components/BackgroundComponent.js'
 import InteractionComponent from './ecs/components/InteractionComponent.js'
 // Systems
 import RenderSystem from './ecs/systems/RenderSystem.js'
 import BackgroundRenderSystem from './ecs/systems/BackgroundRenderSystem.js'
+import LevelManager from './components/LevelManager.js'
 
 export default class StateGame {
   #app = null
-  #entities = []
-  #systems = []
+  #entities = new Map()
+  #systems =  new Map()
 
   #itemsLeft = null
   #textFound = null
@@ -27,6 +27,8 @@ export default class StateGame {
   constructor(app, level = 1) {
     this.#app = app
     this.#level = level
+
+    this.levelManager = new LevelManager(this.#app)
   }
 
   enter = () => {
@@ -37,24 +39,15 @@ export default class StateGame {
     this.#systems.forEach(system => system.update())
   }
 
+  findEntity = (id) => {
+    return this.#entities.get(id)
+  }
+
   switchLevel = (newLevel) => {
     this.#level = newLevel
-    this.#itemsLeft = newLevel.items
-
-    // Удаляем все текущие спрайты со сцены
-    this.#entities.forEach(entity => {
-      const containerComponent = entity.getComponent(ContainerComponent) || entity.getComponent(BackgroundComponent)
-
-      if (containerComponent) {
-        this.#app.stage.removeChild(containerComponent.sprite)
-      }
-    })
-
-    // Очищаем текущие сущности и системы
-    this.#entities = []
-    this.#systems = []
-
-    // Перезагружаем уровень
+    this.#itemsLeft = LEVELS[this.#level].items
+    this.levelManager.clearStage(this.#entities)
+    this.levelManager.clearEntitiesAndSystems(this.#entities, this.#systems)
     this.enter()
   }
 
@@ -62,31 +55,31 @@ export default class StateGame {
     const levelConfig = LEVELS[this.#level]
     this.#itemsLeft = levelConfig.items
 
-    // this.#createBackground(levelConfig)
+    this.#createBackground(levelConfig)
     this.#createHogItems(levelConfig)
   }
 
-  // todo id
   #createBackground = (levelConfig) => {
-    const backgroundEntity = new Entity('background')
+    const backgroundEntity = new Entity(`background-${levelConfig.background}`)
     const backgroundTexture = Texture.from(levelConfig.background)
     const backgroundComponent = new BackgroundComponent(backgroundEntity, backgroundTexture)
 
     backgroundEntity.addComponent(backgroundComponent)
-    this.#entities.push(backgroundEntity)
+    this.#entities.set(backgroundEntity.id, backgroundEntity)
   }
 
   #createHogItems = (levelConfig) => {
-    levelConfig.items.forEach(({ name, x, y }, i) => {
-      const hogItemEntity = new Entity(i)
-      const containerComponent = new ContainerComponent(Texture.from(name))
+    levelConfig.items.forEach(({name: textureName, x, y}, i) => {
+      const hogItemEntity = new Entity(`hogItem-${textureName}`)
+
+      const containerComponent = new ContainerComponent(Texture.from(textureName))
       containerComponent.view.once('pointerdown', () => this.#onItemClicked(hogItemEntity))
 
       hogItemEntity.addComponent(new PositionComponent(x, y))
       hogItemEntity.addComponent(containerComponent)
       hogItemEntity.addComponent(new InteractionComponent())
 
-      this.#entities.push(hogItemEntity)
+      this.#entities.set(hogItemEntity.id, hogItemEntity)
     })
 
     this.#itemsLeft = levelConfig.items.length
@@ -101,7 +94,8 @@ export default class StateGame {
       renderSystem.addEntity(entity)
     })
 
-    this.#systems.push(backgroundRenderSystem, renderSystem)
+    this.#systems.set('backgroundRenderSystem', backgroundRenderSystem)
+    this.#systems.set('renderSystem', renderSystem)
   }
 
   #onItemClicked = (entity) => {
@@ -116,6 +110,9 @@ export default class StateGame {
           this.#app.stage.removeChild(view)
           this.#itemsLeft -= 1
           this.#updateText()
+
+          // Удаляем сущность из Map
+          this.#entities.delete(entity.id)
 
           if (this.#itemsLeft === 0) this.#levelEndAction()
         })

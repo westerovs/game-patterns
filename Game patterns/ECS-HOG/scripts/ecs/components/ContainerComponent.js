@@ -4,14 +4,15 @@ import Component from './Component.js'
 export default class ContainerComponent extends Component {
   #view = new Container()
 
-  constructor(texture) {
+  constructor(textureName) {
     super()
 
-    this.#createView(texture)
+    this.#view.name = textureName
+    this.#createView(textureName)
   }
 
-  #createView = (texture) => {
-    const sprite = new Sprite(texture)
+  #createView = (textureName) => {
+    const sprite = new Sprite(textureName)
     this.#view.addChild(sprite)
   }
 
