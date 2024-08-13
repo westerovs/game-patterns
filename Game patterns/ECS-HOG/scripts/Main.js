@@ -1,7 +1,7 @@
 import {Application} from '../assets/lib/pixi.mjs'
 import {assetsMap} from './assetsMap.js'
 import {CONFIG} from './CONFIG.js'
-import StateGame from './StateGame.js'
+import LevelState from './LevelState.js'
 
 const App = new Application(CONFIG)
 document.body.appendChild(App.view)
@@ -9,7 +9,7 @@ document.body.appendChild(App.view)
 class Game {
   constructor() {
     this.app = App
-    this.stateGame = new StateGame(this.app, 1)
+    this.levelState = new LevelState(this.app, 1)
   }
 
   preload() {
@@ -23,7 +23,7 @@ class Game {
   }
 
   startGame() {
-    this.stateGame.enter()
+    this.levelState.enter()
   }
 }
 

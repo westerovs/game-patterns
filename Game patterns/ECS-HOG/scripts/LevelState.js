@@ -13,7 +13,7 @@ import RenderSystem from './ecs/systems/RenderSystem.js'
 import BackgroundRenderSystem from './ecs/systems/BackgroundRenderSystem.js'
 import LevelManager from './components/LevelManager.js'
 
-export default class StateGame {
+export default class LevelState {
   #app = null
   #entities = new Map()
   #systems =  new Map()
